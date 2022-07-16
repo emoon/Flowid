@@ -1,1 +1,4 @@
 bin/linux/ispc filter=lfs diff=lfs merge=lfs -text
+bin/macos/ispc filter=lfs diff=lfs merge=lfs -text
+bin/windows/ispc.exe filter=lfs diff=lfs merge=lfs -text
+bin/windows/ispcrt.dll filter=lfs diff=lfs merge=lfs -text
