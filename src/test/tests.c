@@ -1,3 +1,4 @@
+#include <math.h>
 #include "flowid.h"
 #include "flowid_types.h"
 #include "utest.h"
