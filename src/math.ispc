@@ -35,6 +35,28 @@ export void fld_hsl_to_rgb_ispc(uniform FldColor output[], uniform float h, unif
     output[0].a = a;
 }
 
+
+// Linearly interpolates from color c0 to c1, and returns resulting color value.
+// TODO: This doesn't generate that great code, needs to be fixed
+void fld_lerp_rgba(uniform FldColor out[], uniform FldColor c0, uniform FldColor c1, uniform float u) {
+    uniform float temp[TARGET_WIDTH * programCount];
+
+	u = clamp(u, 0.0f, 1.0f);
+	uniform float one_min_u = 1.0f - u;
+
+    float r = c0.r * one_min_u + c1.r * u;
+    float g = c0.g * one_min_u + c1.g * u;
+    float b = c0.b * one_min_u + c1.b * u;
+    float a = c0.a * one_min_u + c1.a * u;
+
+    soa_to_aos4(r, g, b, a, temp);
+    out[0].r = temp[0];
+    out[0].g = temp[1];
+    out[0].b = temp[2];
+    out[0].a = temp[3];
+}
+
+
 export void eval_quadratic_bezier(uniform float out_x[], uniform float out_y[], const uniform float in_x0[],
                                   const uniform float in_x1[], const uniform float in_x2[], const uniform float in_y0[],
                                   const uniform float in_y1[], const uniform float in_y2[], const uniform float time[],
