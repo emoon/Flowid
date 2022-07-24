@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include <stddef.h>
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef struct {
@@ -9,6 +12,10 @@ typedef struct {
 typedef struct {
     int x, y;
 } FldSize;
+
+typedef struct {
+    int x, y, width, height;
+} FldRect;
 
 /// These flags has been based on the flags from NanoVG by Mikko Mononen.
 enum FldImageFlags {
@@ -26,15 +33,10 @@ enum FldImageFlags {
     FLD_IMAGE_NEAREST = 1 << 5,
 };
 
-typedef struct {
-    float x1, y1;
-    float x2, y2;
-    float x3, y3;
-} FldCubicBezierPoint;
-
 struct FldAllocator;
 struct FldContext;
 typedef uint64_t FldImage;
+typedef uint64_t FldFont;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

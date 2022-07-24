@@ -26,10 +26,10 @@ StaticLibrary {
 
     Sources = { 
         get_c_src("src"),
-		ISPC { 
-            Pass = "IspcGen",
-            Source = "src/math.ispc"
-        },
+		-- ISPC { 
+        --     Pass = "IspcGen",
+        --     Source = "src/math.ispc"
+        -- },
     },
 }
 

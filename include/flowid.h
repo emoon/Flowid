@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include "flowid_types.h"
 
+// TODO: Temporary
+#define FLD_SUPPORT_MALLOC
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Flowid (Flowi Drawing) takes insperation from the following sources: NanoVG, HTML canvas API, but also diveates
 /// a bit from them.
@@ -89,10 +92,10 @@ void fld_path_arc_to(struct FldContext* ctx, float x1, float y1, float x2, float
 void fld_path_ellipse(struct FldContext* ctx, float cx, float cy, float rx, float ry);
 
 /// Adds an Quadratic Bezier curve sub-path.
-void fld_path_quadratic_curve_to(struct FldContext* ctx, float x1, float x1, float x2, float y2);
+void fld_path_quadratic_curve_to(struct FldContext* ctx, float x1, float y1, float x2, float y2);
 
 /// Adds a Bezier curve sub-path. It's recommended to use Quadratic Bezier curves instead, as they are more efficient.
-void fld_path_bezier_curve_to(struct FldContext* ctx, float x1, float x1, float x2, float y2, float x3, float y3);
+void fld_path_bezier_curve_to(struct FldContext* ctx, float x1, float y1, float x2, float y2, float x3, float y3);
 
 /// Generates a stroke of the current path with the current set style.
 void fld_path_stroke(struct FldContext* ctx);
@@ -242,14 +245,14 @@ inline void test_draw(struct FldContext* ctx) {
 */
 
 // Allocator interface required to be implemented by the user when using [fld_create_with_allocator]
-struct FldAllocator {
+typedef struct FldAllocator {
+    /// User data is passed to alloc/realloc/free functions. This can be anything the user desires
+    void* user_data;
     /// Allocate a block of memory at a specific alignment.
     /// This call should return a pointer to the allocated memory or NULL if the allocation failed.
     void* (*alloc)(void* user_data, size_t size, size_t align);
     /// Reallocate a block of memory at a specific alignment. Same rules as for alloc applies
-    void* (*realloc)(void* user_data, void* old_ptr, size_t size, size_t align);
+    void* (*realloc)(void* user_data, void* old_ptr, size_t old_size, size_t size, size_t align);
     /// Free a block of memory.
     void (*free)(void* user_data, void* ptr);
-    /// User data is passed to alloc/realloc/free functions. This can be anything the user desires
-    void* user_data;
-};
+} FldAllocator;
